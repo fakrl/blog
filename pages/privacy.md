@@ -2,6 +2,7 @@
 title: Kebijakan Privasi
 description: Kebijakan privasi Notes: data apa yang dikumpulkan, cookie, dan layanan pihak ketiga seperti iklan.
 date: 2026-10-13
+draft: true
 ---
 
 Terakhir diperbarui: 13 Oktober 2026.

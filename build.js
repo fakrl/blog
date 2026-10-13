@@ -198,7 +198,7 @@ const pages = readDir("pages");
 const tagMap = {};
 posts.forEach((p) => p.tags.forEach((t) => (tagMap[t] = (tagMap[t] || 0) + 1)));
 const tags = Object.entries(tagMap).sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0]));
-const ctx = { posts, tags };
+const ctx = { posts, tags, pages };
 
 const noteRow = (p) => `<a class="note${p.cover ? "" : " nopic"}" href="/${p.slug}/"><time datetime="${p.date}">${fmtDate(p.date)}</time><div><h2>${esc(p.title)}</h2><p>${esc(p.description)}</p><div class="tags">${p.tags.map((t) => `<span class="tag">${esc(t)}</span>`).join("")}</div></div>${frameHtml(p, false)}</a>`;
 
