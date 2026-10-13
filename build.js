@@ -16,7 +16,7 @@ const fmtDate = (d) => new Date(d).toLocaleDateString("id-ID", { day: "numeric",
 const slugify = (s) => s.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
 
 function parse(file) {
-  const raw = fs.readFileSync(file, "utf8");
+  const raw = fs.readFileSync(file, "utf8").replace(/\r\n/g, "\n");
   const m = raw.match(/^---\n([\s\S]*?)\n---\n([\s\S]*)$/);
   if (!m) throw new Error(file + ": front matter missing");
   const meta = {};
@@ -62,7 +62,7 @@ a{color:var(--fg);text-underline-offset:3px}
 .hero h1{font-size:clamp(1.9rem,5vw,2.5rem);line-height:1.15;font-weight:800;letter-spacing:-.02em}.hero p{color:var(--sec);margin:8px 0 28px}
 .crumbs{font-size:.82rem;color:var(--mut);margin-bottom:14px}.crumbs a{color:var(--sec);text-decoration:none}.crumbs a:hover{color:var(--fg)}
 .note{display:grid;grid-template-columns:92px minmax(0,1fr) 132px;gap:18px;padding:22px 0;border-top:1px solid var(--line);text-decoration:none;align-items:start}
-.note:last-child{border-bottom:1px solid var(--line)}.note time{color:var(--mut);font-size:.82rem;font-weight:600;padding-top:5px;line-height:1.4}
+.note.nopic{grid-template-columns:92px minmax(0,1fr)}.note:last-child{border-bottom:1px solid var(--line)}.note time{color:var(--mut);font-size:.82rem;font-weight:600;padding-top:5px;line-height:1.4}
 .note h2{font-size:1.2rem;line-height:1.35;font-weight:700;margin-bottom:4px;transition:opacity .2s}.note:hover h2{opacity:.65}
 .note p{color:var(--sec);font-size:.95rem;line-height:1.65}.note .tags{margin-top:8px}
 .frame{border:1.5px solid var(--frame);border-radius:16px;overflow:hidden;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:4px;color:var(--frame);background:transparent;aspect-ratio:4/3}
@@ -94,7 +94,7 @@ body{padding-top:84px}
 .nav-links.active{opacity:1;pointer-events:auto;transform:translateX(-50%) translateY(0)}
 .nav-links li{width:100%;text-align:center}.nav-links a{display:block}
 }
-@media(max-width:520px){.note{grid-template-columns:minmax(0,1fr) 96px;gap:4px 14px}.note time{grid-column:1/-1;padding:0}}
+@media(max-width:520px){.note{grid-template-columns:minmax(0,1fr) 96px;gap:4px 14px}.note.nopic{grid-template-columns:1fr}.note time{grid-column:1/-1;padding:0}}
 `;
 
 function adSlot(id, tall) {
@@ -105,7 +105,7 @@ function adSlot(id, tall) {
 
 function frameHtml(p, wide) {
   if (p.cover) return `<div class="frame${wide ? " wide" : ""}"><img src="${esc(p.cover)}" alt="${esc(p.coverAlt || p.title)}" ${wide ? "" : 'loading="lazy"'} width="${wide ? 1280 : 400}" height="${wide ? 720 : 300}"></div>`;
-  return `<div class="frame${wide ? " wide" : ""}" role="img" aria-label="Foto belum ditambahkan"><span class="msym">image</span><small>Foto</small></div>`;
+  return "";
 }
 
 function sidebar(posts, tags) {
@@ -200,7 +200,7 @@ posts.forEach((p) => p.tags.forEach((t) => (tagMap[t] = (tagMap[t] || 0) + 1)));
 const tags = Object.entries(tagMap).sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0]));
 const ctx = { posts, tags };
 
-const noteRow = (p) => `<a class="note" href="/${p.slug}/"><time datetime="${p.date}">${fmtDate(p.date)}</time><div><h2>${esc(p.title)}</h2><p>${esc(p.description)}</p><div class="tags">${p.tags.map((t) => `<span class="tag">${esc(t)}</span>`).join("")}</div></div>${frameHtml(p, false)}</a>`;
+const noteRow = (p) => `<a class="note${p.cover ? "" : " nopic"}" href="/${p.slug}/"><time datetime="${p.date}">${fmtDate(p.date)}</time><div><h2>${esc(p.title)}</h2><p>${esc(p.description)}</p><div class="tags">${p.tags.map((t) => `<span class="tag">${esc(t)}</span>`).join("")}</div></div>${frameHtml(p, false)}</a>`;
 
 // Home
 w("index.html", layout(ctx, {
