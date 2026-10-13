@@ -179,7 +179,17 @@ var nx=cur+1;return fetch(U,{method:"PUT",body:JSON.stringify(nx)}).then(functio
 </body></html>`;
 }
 
-const w = (f, c) => { fs.mkdirSync(path.dirname(path.join(OUT, f)), { recursive: true }); fs.writeFileSync(path.join(OUT, f), c); };
+const LOCAL = process.env.LOCAL_PREVIEW === "1";
+// Link internal dibuat relatif supaya situs jalan di domain root maupun sub-path (mis. fakrl.github.io/nama-repo/).
+// LOCAL_PREVIEW=1 menambah index.html untuk dibuka langsung dari file. 404.html dibiarkan absolut.
+const rel = (f, c) => {
+  if (!f.endsWith(".html") || f === "404.html") return c;
+  const pre = "../".repeat(f.split("/").length - 1) || "./";
+  return c
+    .replace(/(href|src)="\/(?!\/)([^"#]*)(#[^"]*)?"/g, (m, a, p, h) => `${a}="${pre}${LOCAL && (p === "" || p.endsWith("/")) ? p + "index.html" : p}${h || ""}"`)
+    .replace(/url\(\/(?!\/)/g, `url(${pre}`);
+};
+const w = (f, c) => { fs.mkdirSync(path.dirname(path.join(OUT, f)), { recursive: true }); fs.writeFileSync(path.join(OUT, f), rel(f, c)); };
 const tagLinks = (tags) => tags.map((t) => `<a class="tag" href="/tag/${slugify(t)}/">${esc(t)}</a>`).join("");
 const crumbLd = (items) => ({ "@context": "https://schema.org", "@type": "BreadcrumbList", itemListElement: items.map(([n, u], i) => ({ "@type": "ListItem", position: i + 1, name: n, item: SITE + u })) });
 // draft: true di front matter = tidak diterbitkan. Post non-draft yang masih ada "[ISI" bikin build gagal.
