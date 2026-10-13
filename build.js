@@ -104,8 +104,11 @@ function adSlot(id, tall) {
 }
 
 function frameHtml(p, wide) {
-  if (p.cover) return `<div class="frame${wide ? " wide" : ""}"><img src="${esc(p.cover)}" alt="${esc(p.coverAlt || p.title)}" ${wide ? "" : 'loading="lazy"'} width="${wide ? 1280 : 400}" height="${wide ? 720 : 300}"></div>`;
-  return "";
+  // Tanpa cover: tidak ada frame. coverPos (object-position) dan coverRatio opsional di front matter.
+  if (!p.cover) return "";
+  const st = [wide && p.coverRatio ? `aspect-ratio:${p.coverRatio}` : ""].filter(Boolean).join(";");
+  const ip = p.coverPos ? ` style="object-position:${esc(p.coverPos)}"` : "";
+  return `<div class="frame${wide ? " wide" : ""}"${st ? ` style="${st}"` : ""}><img src="${esc(p.cover)}" alt="${esc(p.coverAlt || p.title)}"${ip} ${wide ? 'fetchpriority="high"' : 'loading="lazy"'} width="${wide ? 1280 : 400}" height="${wide ? 720 : 300}"></div>`;
 }
 
 function sidebar(posts, tags, pages) {
