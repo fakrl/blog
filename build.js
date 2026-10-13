@@ -254,7 +254,7 @@ pages.forEach((p) => {
     jsonld: [crumbLd([["Catatan", "/"], [p.title, `/${p.slug}/`]])].concat(p.slug === "about" ? [{
       "@context": "https://schema.org", "@type": "ProfilePage", url: `${SITE}/about/`, name: p.title, inLanguage: "id",
       mainEntity: { "@type": "Person", "@id": "https://fakrul.dev/#person", name: "Fakhrul Mukhlisin", alternateName: ["Fakrul"], url: PORTFOLIO + "/", jobTitle: "Full Stack Developer",
-        sameAs: ["https://www.linkedin.com/in/fakrl", "https://github.com/fakrl", PORTFOLIO + "/"] },
+        sameAs: ["https://www.linkedin.com/in/fakrl", "https://github.com/fakrl", "https://www.instagram.com/fak.rl/", PORTFOLIO + "/"] },
     }] : []),
   }));
 });
