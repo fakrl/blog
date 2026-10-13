@@ -37,6 +37,10 @@ function parse(file) {
   return meta;
 }
 
+// Komentar via Giscus (GitHub Discussions). Isi 4 nilai ini dari https://giscus.app, kosong = komentar mati.
+const GISCUS = { repo: "fakrl/blog", repoId: "", category: "Komentar", categoryId: "" };
+const HAS_COMMENTS = !!(GISCUS.repoId && GISCUS.categoryId);
+const commentsHtml = () => HAS_COMMENTS ? `<section class="comments" id="komentar"><h2>Komentar</h2><p class="meta">Komentar lewat GitHub. Login pakai akun GitHub lu.</p><script src="https://giscus.app/client.js" data-repo="${GISCUS.repo}" data-repo-id="${GISCUS.repoId}" data-category="${GISCUS.category}" data-category-id="${GISCUS.categoryId}" data-mapping="pathname" data-strict="1" data-reactions-enabled="1" data-emit-metadata="0" data-input-position="top" data-theme="preferred_color_scheme" data-lang="id" crossorigin="anonymous" async></script></section>` : "";
 const ADS_CLIENT = process.env.ADSENSE_CLIENT || ""; // contoh: ca-pub-1234567890123456 (set di Netlify env saat AdSense aktif)
 
 const css = `
@@ -155,8 +159,7 @@ ${ld}
 <button class="hamburger" id="hamburger" aria-label="Menu" type="button"><span></span><span></span><span></span></button>
 <ul class="nav-links" id="navLinks"><li><a${cur("home")} href="/">Catatan</a></li>${["about", "contact"].map((k) => ctx.pages.find((pg) => pg.slug === k)).filter(Boolean).map((pg) => `<li><a${cur(pg.slug)} href="/${pg.slug}/">${pg.slug === "about" ? "Tentang" : pg.slug === "contact" ? "Kontak" : esc(pg.title)}</a></li>`).join("")}<li><a href="${PORTFOLIO}">Portfolio</a></li></ul>
 </nav>
-<button class="circ avatar-btn" id="avatarBtn" aria-label="Akun" type="button"><span class="msym">account_circle</span></button>
-<div class="toast" id="toast" role="status">Login untuk komentar segera hadir.</div>
+${HAS_COMMENTS ? '<a class="circ avatar-btn" id="avatarBtn" href="#komentar" aria-label="Ke komentar"><span class="msym">account_circle</span></a>' : ""}
 <button class="circ theme-toggle" id="themeBtn" aria-label="Ganti tema" type="button"><span class="msym">dark_mode</span></button>
 <div class="wrap${solo ? " solo" : ""}${!solo && !ctx.posts.length ? " nosb" : ""}"><main>${body}</main>${solo ? "" : sidebar(ctx.posts, ctx.tags, ctx.pages)}</div>
 <footer class="footer"><p>&copy; ${new Date().getFullYear()} ${AUTHOR} &middot; <a href="${PORTFOLIO}">fakrul.dev</a>${ctx.pages.some((pg) => pg.slug === "privacy") ? ' &middot; <a href="/privacy/">Privasi</a>' : ""}</p><p class="visitor-pill" id="visitorPill"><span class="msym" style="font-size:1em;vertical-align:-2px">group</span> Dikunjungi <strong id="visitorCount">-</strong> orang</p></footer>
@@ -169,8 +172,6 @@ b.onclick=function(){var t=d.dataset.theme==="dark"?"light":"dark";d.dataset.the
 function mh(){d.style.setProperty("--navbar-h",n.offsetHeight+"px")}mh();addEventListener("resize",mh);addEventListener("load",mh);
 var h=document.getElementById("hamburger"),l=document.getElementById("navLinks");
 h.onclick=function(){h.classList.toggle("active");l.classList.toggle("active")};
-var a=document.getElementById("avatarBtn"),t=document.getElementById("toast"),tm;
-a.onclick=function(){t.classList.add("on");clearTimeout(tm);tm=setTimeout(function(){t.classList.remove("on")},2600)};
 // Penghitung pengunjung: path terpisah dari portfolio. Hanya tampil kalau baca/tulis ke DB berhasil.
 var k=(location.pathname.replace(/^\\/|\\/$/g,"").replace(/[^a-z0-9-]+/gi,"_"))||"home",U="https://fakrul-feeeb-default-rtdb.asia-southeast1.firebasedatabase.app/stats/notes/"+k+"/count.json",p=document.getElementById("visitorPill"),c=document.getElementById("visitorCount");
 try{var seen=localStorage.getItem("nv_"+k)==="1";
@@ -226,7 +227,7 @@ w("index.html", layout(ctx, {
 // Posts
 posts.forEach((p, i) => {
   const next = posts[i + 1];
-  const body = `<nav class="crumbs" aria-label="Breadcrumb"><a href="/">Catatan</a> / ${esc(p.title)}</nav><article><p class="meta"><time datetime="${p.date}">${fmtDate(p.date)}</time> &middot; ${Math.max(1, Math.round(p.words / 200))} menit baca</p><h1>${esc(p.title)}</h1><div class="tags">${tagLinks(p.tags)}</div>${frameHtml(p, true)}${p.html}</article>${next ? `<p class="meta" style="margin-top:32px">Sebelumnya: <a href="/${next.slug}/">${esc(next.title)}</a></p>` : ""}`;
+  const body = `<nav class="crumbs" aria-label="Breadcrumb"><a href="/">Catatan</a> / ${esc(p.title)}</nav><article><p class="meta"><time datetime="${p.date}">${fmtDate(p.date)}</time> &middot; ${Math.max(1, Math.round(p.words / 200))} menit baca</p><h1>${esc(p.title)}</h1><div class="tags">${tagLinks(p.tags)}</div>${frameHtml(p, true)}${p.html}</article>${commentsHtml()}${next ? `<p class="meta" style="margin-top:32px">Sebelumnya: <a href="/${next.slug}/">${esc(next.title)}</a></p>` : ""}`;
   w(`${p.slug}/index.html`, layout(ctx, {
     title: p.title, description: p.description, path: `/${p.slug}/`, body, type: "article", image: p.cover || "",
     jsonld: [
