@@ -82,6 +82,7 @@ blockquote{border-left:3px solid var(--line);padding-left:16px;color:var(--sec);
 .box h3{font-size:.78rem;text-transform:uppercase;letter-spacing:.08em;color:var(--mut);margin-bottom:10px;font-weight:700}.box p{font-size:.92rem;color:var(--sec);line-height:1.65}.box a.more{display:inline-block;margin-top:8px;font-size:.88rem;font-weight:600}
 .ad{display:block;width:100%;min-height:250px;overflow:hidden}.ad.tall{min-height:600px}
 .mlist{list-style:none;padding:0}.mlist li{padding:6px 0;font-size:.92rem;line-height:1.45}.mlist a{text-decoration:none;color:var(--sec)}.mlist a:hover{color:var(--fg)}
+.btn{display:inline-flex;align-items:center;gap:8px;padding:11px 22px;border-radius:999px;border:1.5px solid var(--fg);font-weight:600;font-size:.92rem;text-decoration:none;background:var(--fg);color:var(--bg)!important;margin-top:8px;transition:transform .25s,box-shadow .25s}.btn:hover{transform:translateY(-2px);box-shadow:var(--shadow-h)}
 .footer{text-align:center;padding:2rem 5% 5rem;width:100%;font-size:.85rem;color:var(--mut);background:var(--bg);border-top:1px solid var(--line);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px)}.footer a{color:var(--sec);text-decoration:none}.footer a:hover{color:var(--fg)}.footer-links{margin-top:.6rem}
 .visitor-pill{display:none;align-items:center;gap:5px;margin-top:.6rem;padding:4px 12px;border-radius:100px;font-size:.75rem;font-weight:600;background:var(--code);color:var(--sec)}
 @media(max-width:860px){.wrap{grid-template-columns:minmax(0,1fr);gap:32px}.side{position:static}.ad.tall{display:none}}
@@ -152,7 +153,7 @@ ${ld}
 <nav class="navbar" id="navbar" aria-label="Utama">
 <a class="nav-logo" href="/" aria-label="Notes, beranda"><img src="/favicon.webp" alt="FM Logo" width="32" height="32"></a>
 <button class="hamburger" id="hamburger" aria-label="Menu" type="button"><span></span><span></span><span></span></button>
-<ul class="nav-links" id="navLinks"><li><a${cur("home")} href="/">Catatan</a></li>${["about", "contact"].map((k) => ctx.pages.find((pg) => pg.slug === k)).filter(Boolean).map((pg) => `<li><a${cur(pg.slug)} href="/${pg.slug}/">${esc(pg.title)}</a></li>`).join("")}<li><a href="${PORTFOLIO}">Portfolio</a></li></ul>
+<ul class="nav-links" id="navLinks"><li><a${cur("home")} href="/">Catatan</a></li>${["about", "contact"].map((k) => ctx.pages.find((pg) => pg.slug === k)).filter(Boolean).map((pg) => `<li><a${cur(pg.slug)} href="/${pg.slug}/">${pg.slug === "about" ? "Tentang" : pg.slug === "contact" ? "Kontak" : esc(pg.title)}</a></li>`).join("")}<li><a href="${PORTFOLIO}">Portfolio</a></li></ul>
 </nav>
 <button class="circ avatar-btn" id="avatarBtn" aria-label="Akun" type="button"><span class="msym">account_circle</span></button>
 <div class="toast" id="toast" role="status">Login untuk komentar segera hadir.</div>
@@ -250,7 +251,11 @@ pages.forEach((p) => {
   w(`${p.slug}/index.html`, layout(ctx, {
     title: p.title, description: p.description, path: `/${p.slug}/`, solo: true, active: p.slug,
     body: `<article><h1>${esc(p.title)}</h1>${p.html}</article>`,
-    jsonld: [crumbLd([["Catatan", "/"], [p.title, `/${p.slug}/`]])],
+    jsonld: [crumbLd([["Catatan", "/"], [p.title, `/${p.slug}/`]])].concat(p.slug === "about" ? [{
+      "@context": "https://schema.org", "@type": "ProfilePage", url: `${SITE}/about/`, name: p.title, inLanguage: "id",
+      mainEntity: { "@type": "Person", "@id": "https://fakrul.dev/#person", name: "Fakhrul Mukhlisin", alternateName: ["Fakrul"], url: PORTFOLIO + "/", jobTitle: "Full Stack Developer",
+        sameAs: ["https://www.linkedin.com/in/fakrl", "https://github.com/fakrl", PORTFOLIO + "/"] },
+    }] : []),
   }));
 });
 
