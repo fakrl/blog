@@ -108,11 +108,11 @@ function frameHtml(p, wide) {
   return "";
 }
 
-function sidebar(posts, tags) {
+function sidebar(posts, tags, pages) {
   const recent = posts.slice(0, 5).map((p) => `<li><a href="/${p.slug}/">${esc(p.title)}</a></li>`).join("");
   const tagHtml = tags.map(([t, n]) => `<a class="tag" href="/tag/${slugify(t)}/">${esc(t)} <span style="opacity:.6">${n}</span></a>`).join("");
   return `<aside class="side">
-<div class="box"><h3>Tentang</h3><p>Fakrul, mahasiswa Sistem Informasi dan Full Stack Engineer. Di sini gua nulis catatan dari yang gua kerjain dan pelajari.</p><a class="more" href="/about/">Selengkapnya &rarr;</a></div>
+<div class="box"><h3>Tentang</h3><p>Fakrul, mahasiswa Sistem Informasi dan Full Stack Engineer. Di sini gua nulis catatan dari yang gua kerjain dan pelajari.</p>${pages.some((pg) => pg.slug === "about") ? '<a class="more" href="/about/">Selengkapnya &rarr;</a>' : ""}</div>
 ${adSlot("sidebar-top")}
 <div class="box"><h3>Terbaru</h3><ul class="mlist">${recent}</ul></div>
 <div class="box"><h3>Topik</h3>${tagHtml}</div>
@@ -149,13 +149,13 @@ ${ld}
 <nav class="navbar" id="navbar" aria-label="Utama">
 <a class="nav-logo" href="/" aria-label="Notes, beranda"><img src="/favicon.webp" alt="FM Logo" width="32" height="32"></a>
 <button class="hamburger" id="hamburger" aria-label="Menu" type="button"><span></span><span></span><span></span></button>
-<ul class="nav-links" id="navLinks"><li><a${cur("home")} href="/">Catatan</a></li><li><a${cur("about")} href="/about/">Tentang</a></li><li><a${cur("contact")} href="/contact/">Kontak</a></li><li><a href="${PORTFOLIO}">Portfolio</a></li></ul>
+<ul class="nav-links" id="navLinks"><li><a${cur("home")} href="/">Catatan</a></li>${["about", "contact"].map((k) => ctx.pages.find((pg) => pg.slug === k)).filter(Boolean).map((pg) => `<li><a${cur(pg.slug)} href="/${pg.slug}/">${esc(pg.title)}</a></li>`).join("")}<li><a href="${PORTFOLIO}">Portfolio</a></li></ul>
 </nav>
 <button class="circ avatar-btn" id="avatarBtn" aria-label="Akun" type="button"><span class="msym">account_circle</span></button>
 <div class="toast" id="toast" role="status">Login untuk komentar segera hadir.</div>
 <button class="circ theme-toggle" id="themeBtn" aria-label="Ganti tema" type="button"><span class="msym">dark_mode</span></button>
-<div class="wrap${solo ? " solo" : ""}${!solo && !ctx.posts.length ? " nosb" : ""}"><main>${body}</main>${solo ? "" : sidebar(ctx.posts, ctx.tags)}</div>
-<footer class="footer"><p>&copy; ${new Date().getFullYear()} ${AUTHOR}.</p><p class="footer-links"><a href="/about/">Tentang</a> &middot; <a href="/contact/">Kontak</a> &middot; <a href="/privacy/">Privasi</a> &middot; <a href="/feed.xml">RSS</a> &middot; <a href="${PORTFOLIO}">fakrul.dev</a></p><p class="visitor-pill" id="visitorPill"><span class="msym" style="font-size:1em;vertical-align:-2px">group</span> Dikunjungi <strong id="visitorCount">-</strong> orang</p></footer>
+<div class="wrap${solo ? " solo" : ""}${!solo && !ctx.posts.length ? " nosb" : ""}"><main>${body}</main>${solo ? "" : sidebar(ctx.posts, ctx.tags, ctx.pages)}</div>
+<footer class="footer"><p>&copy; ${new Date().getFullYear()} ${AUTHOR} &middot; <a href="${PORTFOLIO}">fakrul.dev</a>${ctx.pages.some((pg) => pg.slug === "privacy") ? ' &middot; <a href="/privacy/">Privasi</a>' : ""}</p><p class="visitor-pill" id="visitorPill"><span class="msym" style="font-size:1em;vertical-align:-2px">group</span> Dikunjungi <strong id="visitorCount">-</strong> orang</p></footer>
 <script>
 (function(){
 var d=document.documentElement,b=document.getElementById("themeBtn"),n=document.getElementById("navbar");
