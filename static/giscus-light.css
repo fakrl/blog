@@ -1,0 +1,31 @@
+@import url("https://giscus.app/themes/light.css");
+@import url("https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap");
+main{
+  --color-canvas-default:transparent;
+  --color-canvas-subtle:rgba(0,0,0,.04);
+  --color-canvas-inset:rgba(0,0,0,.06);
+  --color-border-default:rgba(0,0,0,.1);
+  --color-border-muted:rgba(0,0,0,.1);
+  --color-fg-default:#0a0a0a;
+  --color-fg-muted:#555555;
+  --color-accent-fg:#0a0a0a;
+  --color-accent-emphasis:#0a0a0a;
+  --color-btn-bg:rgba(0,0,0,.04);
+  --color-btn-border:rgba(0,0,0,.1);
+  --color-btn-text:#0a0a0a;
+  --color-btn-hover-bg:rgba(0,0,0,.06);
+  --color-btn-primary-bg:#0a0a0a;
+  --color-btn-primary-text:#f8f8f6;
+  --color-btn-primary-border:transparent;
+  --color-btn-primary-hover-bg:#555555;
+  --color-btn-primary-hover-border:transparent;
+  --color-btn-primary-selected-bg:#555555;
+  --color-btn-primary-disabled-bg:rgba(0,0,0,.1);
+  --color-btn-primary-disabled-text:#555555;
+  --color-input-bg:rgba(0,0,0,.04);
+  --color-input-border:rgba(0,0,0,.1);
+  font-family:"Plus Jakarta Sans",system-ui,sans-serif;
+}
+.gsc-comment-box,.gsc-comment,.gsc-reply-box,.gsc-comment-box-textarea,.gsc-comment-box-tabs{border-radius:14px}
+.gsc-comment-box-textarea{background:var(--color-input-bg)}
+.btn,.gsc-comment-box-button{border-radius:999px;font-weight:600}

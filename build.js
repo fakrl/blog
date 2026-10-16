@@ -40,7 +40,7 @@ function parse(file) {
 // Komentar via Giscus (GitHub Discussions). Isi 4 nilai ini dari https://giscus.app, kosong = komentar mati.
 const GISCUS = { repo: "fakrl/notes", repoId: "R_kgDOVFqnYA", category: "Announcements", categoryId: "DIC_kwDOVFqnYM4DIV68" };
 const HAS_COMMENTS = !!(GISCUS.repoId && GISCUS.categoryId);
-const commentsHtml = () => HAS_COMMENTS ? `<section class="comments" id="komentar"><h2>Komentar</h2><p class="meta">Komentar lewat GitHub. Login pakai akun GitHub lu.</p><script src="https://giscus.app/client.js" data-repo="${GISCUS.repo}" data-repo-id="${GISCUS.repoId}" data-category="${GISCUS.category}" data-category-id="${GISCUS.categoryId}" data-mapping="pathname" data-strict="1" data-reactions-enabled="1" data-emit-metadata="0" data-input-position="top" data-theme="preferred_color_scheme" data-lang="id" crossorigin="anonymous" async></script></section>` : "";
+const commentsHtml = () => HAS_COMMENTS ? `<section class="comments" id="komentar"><h2>Komentar</h2><p class="meta">Komentar lewat GitHub. Login pakai akun GitHub lu.</p><script>(function(){var t=document.documentElement.dataset.theme==="dark"?"dark":"light",s=document.createElement("script");s.src="https://giscus.app/client.js";var a={"data-repo":"${GISCUS.repo}","data-repo-id":"${GISCUS.repoId}","data-category":"${GISCUS.category}","data-category-id":"${GISCUS.categoryId}","data-mapping":"pathname","data-strict":"1","data-reactions-enabled":"1","data-emit-metadata":"0","data-input-position":"top","data-theme":"${SITE}/giscus-"+t+".css","data-lang":"id","crossorigin":"anonymous"};for(var k in a)s.setAttribute(k,a[k]);s.async=true;document.getElementById("komentar").appendChild(s)})()</script></section>` : "";
 const ADS_CLIENT = process.env.ADSENSE_CLIENT || ""; // contoh: ca-pub-1234567890123456 (set di Netlify env saat AdSense aktif)
 
 const css = `
@@ -168,7 +168,8 @@ ${HAS_COMMENTS ? '<a class="circ avatar-btn" id="avatarBtn" href="#komentar" ari
 var d=document.documentElement,b=document.getElementById("themeBtn"),n=document.getElementById("navbar");
 function icon(){b.innerHTML='<span class="msym">'+(d.dataset.theme==="dark"?"light_mode":"dark_mode")+"</span>"}
 icon();
-b.onclick=function(){var t=d.dataset.theme==="dark"?"light":"dark";d.dataset.theme=t;try{localStorage.setItem("theme",t)}catch(e){}icon()};
+function gt(t){var f=document.querySelector("iframe.giscus-frame");if(f)f.contentWindow.postMessage({giscus:{setConfig:{theme:location.origin+"/giscus-"+t+".css"}}},"https://giscus.app")}
+b.onclick=function(){var t=d.dataset.theme==="dark"?"light":"dark";d.dataset.theme=t;try{localStorage.setItem("theme",t)}catch(e){}icon();gt(t)};
 function mh(){d.style.setProperty("--navbar-h",n.offsetHeight+"px")}mh();addEventListener("resize",mh);addEventListener("load",mh);
 var h=document.getElementById("hamburger"),l=document.getElementById("navLinks");
 h.onclick=function(){h.classList.toggle("active");l.classList.toggle("active")};
@@ -255,7 +256,7 @@ pages.forEach((p) => {
     jsonld: [crumbLd([["Catatan", "/"], [p.title, `/${p.slug}/`]])].concat(p.slug === "about" ? [{
       "@context": "https://schema.org", "@type": "ProfilePage", url: `${SITE}/about/`, name: p.title, inLanguage: "id",
       mainEntity: { "@type": "Person", "@id": "https://fakrul.dev/#person", name: "Fakhrul Mukhlisin", alternateName: ["Fakrul"], url: PORTFOLIO + "/", jobTitle: "Full Stack Developer",
-        sameAs: ["https://www.linkedin.com/in/fakrl", "https://github.com/fakrl", "https://www.instagram.com/fak.rl/", PORTFOLIO + "/"] },
+        sameAs: ["https://www.linkedin.com/in/fakrl", "https://github.com/fakrl", "https://www.instagram.com/fak.rl/", "https://www.youtube.com/@fak_rl", PORTFOLIO + "/"] },
     }] : []),
   }));
 });

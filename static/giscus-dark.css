@@ -1,0 +1,31 @@
+@import url("https://giscus.app/themes/dark.css");
+@import url("https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap");
+main{
+  --color-canvas-default:transparent;
+  --color-canvas-subtle:rgba(255,255,255,.05);
+  --color-canvas-inset:rgba(255,255,255,.08);
+  --color-border-default:rgba(255,255,255,.12);
+  --color-border-muted:rgba(255,255,255,.12);
+  --color-fg-default:#f0f0f0;
+  --color-fg-muted:#a0a0a0;
+  --color-accent-fg:#f0f0f0;
+  --color-accent-emphasis:#f0f0f0;
+  --color-btn-bg:rgba(255,255,255,.05);
+  --color-btn-border:rgba(255,255,255,.12);
+  --color-btn-text:#f0f0f0;
+  --color-btn-hover-bg:rgba(255,255,255,.08);
+  --color-btn-primary-bg:#f0f0f0;
+  --color-btn-primary-text:#080808;
+  --color-btn-primary-border:transparent;
+  --color-btn-primary-hover-bg:#a0a0a0;
+  --color-btn-primary-hover-border:transparent;
+  --color-btn-primary-selected-bg:#a0a0a0;
+  --color-btn-primary-disabled-bg:rgba(255,255,255,.12);
+  --color-btn-primary-disabled-text:#a0a0a0;
+  --color-input-bg:rgba(255,255,255,.05);
+  --color-input-border:rgba(255,255,255,.12);
+  font-family:"Plus Jakarta Sans",system-ui,sans-serif;
+}
+.gsc-comment-box,.gsc-comment,.gsc-reply-box,.gsc-comment-box-textarea,.gsc-comment-box-tabs{border-radius:14px}
+.gsc-comment-box-textarea{background:var(--color-input-bg)}
+.btn,.gsc-comment-box-button{border-radius:999px;font-weight:600}

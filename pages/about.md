@@ -24,6 +24,7 @@ Di sini gua nulis catatan soal ngoding, kuliah, dan tempat-tempat yang gua daten
 - LinkedIn: [linkedin.com/in/fakrl](https://www.linkedin.com/in/fakrl)
 - GitHub: [github.com/fakrl](https://github.com/fakrl)
 - Instagram: [@fak.rl](https://www.instagram.com/fak.rl/)
+- YouTube: [@fak_rl](https://www.youtube.com/@fak_rl)
 - WhatsApp: [chat langsung](https://wa.me/6281315324195)
 
 <a class="btn" href="https://fakrul.dev">Lihat selengkapnya di fakrul.dev &rarr;</a>
