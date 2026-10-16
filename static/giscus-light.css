@@ -29,3 +29,4 @@ main{
 .gsc-comment-box,.gsc-comment,.gsc-reply-box,.gsc-comment-box-textarea,.gsc-comment-box-tabs{border-radius:14px}
 .gsc-comment-box-textarea{background:var(--color-input-bg)}
 .btn,.gsc-comment-box-button{border-radius:999px;font-weight:600}
+.gsc-comment-box-textarea-extras,.gsc-comment-box-markdown-hint{display:none!important}
