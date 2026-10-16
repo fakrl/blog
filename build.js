@@ -38,7 +38,7 @@ function parse(file) {
 }
 
 // Komentar via Giscus (GitHub Discussions). Isi 4 nilai ini dari https://giscus.app, kosong = komentar mati.
-const GISCUS = { repo: "fakrl/blog", repoId: "", category: "Komentar", categoryId: "" };
+const GISCUS = { repo: "fakrl/notes", repoId: "R_kgDOVFqnYA", category: "Announcements", categoryId: "DIC_kwDOVFqnYM4DIV68" };
 const HAS_COMMENTS = !!(GISCUS.repoId && GISCUS.categoryId);
 const commentsHtml = () => HAS_COMMENTS ? `<section class="comments" id="komentar"><h2>Komentar</h2><p class="meta">Komentar lewat GitHub. Login pakai akun GitHub lu.</p><script src="https://giscus.app/client.js" data-repo="${GISCUS.repo}" data-repo-id="${GISCUS.repoId}" data-category="${GISCUS.category}" data-category-id="${GISCUS.categoryId}" data-mapping="pathname" data-strict="1" data-reactions-enabled="1" data-emit-metadata="0" data-input-position="top" data-theme="preferred_color_scheme" data-lang="id" crossorigin="anonymous" async></script></section>` : "";
 const ADS_CLIENT = process.env.ADSENSE_CLIENT || ""; // contoh: ca-pub-1234567890123456 (set di Netlify env saat AdSense aktif)
