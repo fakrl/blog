@@ -7,7 +7,7 @@ body:
     id: judul
     attributes:
       label: Judul
-      placeholder: Contoh: Kenapa gua pindah ke static site generator sendiri
+      placeholder: "Contoh: Kenapa gua pindah ke static site generator sendiri"
     validations:
       required: true
   - type: textarea
