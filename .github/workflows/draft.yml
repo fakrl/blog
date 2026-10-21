@@ -1,0 +1,32 @@
+name: Draft post harian
+
+on:
+  schedule:
+    - cron: "0 1 * * *"   # 08:00 WIB
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  draft:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Generate draft dari antrean
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+        run: node scripts/draft.js
+      - name: Buka Pull Request untuk direview
+        uses: peter-evans/create-pull-request@v6
+        with:
+          branch: draft/auto
+          commit-message: "Draft post otomatis (review dulu)"
+          title: "Draft post: review sebelum terbit"
+          body: |
+            Draft dibuat otomatis dari scripts/queue.json.
+            Cek fakta, isi penanda [ISI: ...], edit gaya, lalu hapus baris `draft: true` agar terbit. Merge = persetujuan.
