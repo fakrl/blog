@@ -3,7 +3,7 @@ const fs = require("fs");
 const path = require("path");
 const POSTS = path.join(__dirname, "..", "posts");
 const IMG = path.join(__dirname, "..", "static", "img");
-const MODEL = process.env.GEMINI_MODEL || "gemini-2.5-flash";
+const MODEL = process.env.GEMINI_MODEL || "gemini-3.8-flash";
 
 const slugify = (s) => String(s).toLowerCase().normalize("NFKD").replace(/[^\w\s-]/g, "").trim().replace(/[\s_]+/g, "-").replace(/-+/g, "-").slice(0, 70);
 
