@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="id"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow"><title>Admin Notes</title>
+<style>
+:root{--bg:#fafaf8;--fg:#1c1c1a;--mut:#6b6b66;--line:#dcdcd5;--card:#fff;--ac:#2f6f4f}
+@media(prefers-color-scheme:dark){:root{--bg:#141413;--fg:#ececE6;--mut:#9a9a92;--line:#33332f;--card:#1d1d1b;--ac:#6fcf9b}}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.5 system-ui,sans-serif}
+main{max-width:640px;margin:0 auto;padding:24px 16px 64px}h1{font-size:1.4rem;margin:0 0 4px}p.s{color:var(--mut);margin:0 0 20px}
+label{display:block;font-weight:600;margin:16px 0 4px}small{color:var(--mut);font-weight:400}
+input,textarea,select{width:100%;padding:10px;border:1px solid var(--line);border-radius:10px;background:var(--card);color:var(--fg);font:inherit}
+textarea{min-height:110px;resize:vertical}
+button{margin-top:20px;padding:12px 18px;border:0;border-radius:999px;background:var(--ac);color:#fff;font:inherit;font-weight:600;cursor:pointer}
+.n{margin-top:16px;padding:12px;border:1px dashed var(--line);border-radius:10px;color:var(--mut);font-size:.9rem}
+</style></head><body><main>
+<h1>Topik post baru</h1>
+<p class="s">Isi di sini, lalu lanjut di GitHub buat nambah gambar dan kirim. Bot yang nulis dan bikin Pull Request.</p>
+<form id="f">
+<label>Judul</label><input id="judul" required>
+<label>Fakta <small>(dari pengalaman lu sendiri, satu per baris. AI cuma boleh pakai ini)</small></label><textarea id="fakta" required placeholder="- Gejala: ...&#10;- Penyebab: ...&#10;- Perbaikan: ..."></textarea>
+<label>Tautan / backlink <small>(url | teks tautan, satu per baris)</small></label><textarea id="tautan"></textarea>
+<label>Sudut / pesan utama <small>(opsional)</small></label><input id="sudut">
+<label>Tag <small>(pisah koma)</small></label><input id="tag" placeholder="laravel, debugging">
+<label>Mode</label><select id="mode"><option>Draft (review dulu di Pull Request)</option><option>Terbitkan otomatis (kalau lolos pengecekan)</option></select>
+<button type="submit">Lanjut ke GitHub</button>
+<div class="n">Gambar: di halaman GitHub berikutnya, tarik-lepas file ke kolom <b>Gambar</b> (maks 3 MB per gambar). Gambar nggak bisa dikirim dari halaman ini.</div>
+</form>
+<script>
+document.getElementById('f').addEventListener('submit',function(e){
+  e.preventDefault();
+  var g=function(i){return document.getElementById(i).value.trim()};
+  var q=new URLSearchParams({template:'topik-post.yml',title:'Post: '+g('judul'),labels:'topik',
+    judul:g('judul'),fakta:g('fakta'),tautan:g('tautan'),sudut:g('sudut'),tag:g('tag'),mode:g('mode')});
+  location.href='https://github.com/fakrl/notes/issues/new?'+q.toString();
+});
+</script></main></body></html>
