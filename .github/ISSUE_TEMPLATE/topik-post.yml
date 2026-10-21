@@ -1,0 +1,60 @@
+name: Topik post baru
+description: Isi topik dan fakta, sisanya digenerate otomatis jadi post.
+title: "Post: "
+labels: ["topik"]
+body:
+  - type: input
+    id: judul
+    attributes:
+      label: Judul
+      placeholder: Contoh: Kenapa gua pindah ke static site generator sendiri
+    validations:
+      required: true
+  - type: textarea
+    id: fakta
+    attributes:
+      label: Fakta (dari pengalaman lu sendiri)
+      description: Satu fakta per baris. AI hanya boleh memakai ini, tidak boleh menambah cerita. Makin spesifik makin bagus.
+      placeholder: |
+        - Gejala: tombol X tidak bereaksi
+        - Penyebab: file Y isinya teks, bukan JS
+        - Perbaikan: ...
+    validations:
+      required: true
+  - type: textarea
+    id: gambar
+    attributes:
+      label: Gambar
+      description: Tarik-lepas gambar ke sini (maks 3 MB per gambar), atau tulis `URL | keterangan` satu per baris. Boleh kosong.
+  - type: textarea
+    id: tautan
+    attributes:
+      label: Tautan (backlink)
+      description: "Satu per baris: `https://contoh.com | teks tautan`. Boleh kosong."
+  - type: input
+    id: sudut
+    attributes:
+      label: Sudut / pesan utama (opsional)
+  - type: input
+    id: tag
+    attributes:
+      label: Tag (pisah koma)
+      placeholder: laravel, debugging
+  - type: input
+    id: slug
+    attributes:
+      label: Slug (opsional)
+  - type: input
+    id: deskripsi
+    attributes:
+      label: Deskripsi singkat (opsional)
+  - type: dropdown
+    id: mode
+    attributes:
+      label: Mode
+      options:
+        - Draft (review dulu di Pull Request)
+        - Terbitkan otomatis (kalau lolos pengecekan)
+      default: 0
+    validations:
+      required: true

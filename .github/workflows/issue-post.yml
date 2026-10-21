@@ -1,0 +1,48 @@
+name: Post dari form
+
+on:
+  issues:
+    types: [opened]
+
+permissions:
+  contents: write
+  pull-requests: write
+  issues: write
+  actions: write
+
+jobs:
+  post:
+    if: contains(github.event.issue.labels.*.name, 'topik') && github.event.issue.user.login == github.repository_owner
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - run: npm ci
+      - name: Generate post
+        id: gen
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          ISSUE_BODY: ${{ github.event.issue.body }}
+        run: node scripts/from-issue.js
+      - name: Pastikan build lolos
+        run: node build.js
+      - name: Buka Pull Request
+        id: pr
+        uses: peter-evans/create-pull-request@v6
+        with:
+          branch: post/issue-${{ github.event.issue.number }}
+          commit-message: "Post otomatis: ${{ steps.gen.outputs.slug }}"
+          title: "Post: ${{ steps.gen.outputs.slug }}"
+          body: |
+            Dari issue #${{ github.event.issue.number }}.
+            Status: ${{ steps.gen.outputs.published == 'true' && 'siap terbit' || 'draft (hapus baris draft: true untuk menerbitkan)' }}${{ steps.gen.outputs.placeholder == 'true' && ' | ada penanda [ISI], lengkapi dulu' || '' }}
+            Closes #${{ github.event.issue.number }}
+      - name: Merge otomatis (hanya jika diizinkan dan lolos)
+        if: steps.pr.outputs.pull-request-number != '' && steps.gen.outputs.published == 'true' && vars.AUTO_MERGE == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh pr merge ${{ steps.pr.outputs.pull-request-number }} --squash --delete-branch
+          gh workflow run pages.yml --ref main
