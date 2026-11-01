@@ -3,20 +3,29 @@
     "slug": "form-dipecah-per-bagian-bisa-hapus-data",
     "title": "Memecah form jadi beberapa bagian bisa menghapus data diam-diam",
     "description": "Satu form profil dipecah per bagian, dan menyimpan satu bagian malah menimpa bagian lain.",
-    "tags": ["laravel", "form", "debugging"],
+    "tags": [
+      "laravel",
+      "form",
+      "debugging"
+    ],
     "angle": "pelajaran desain controller saat memecah form",
     "facts": [
       "Controller update profil lama menganggap semua field selalu dikirim.",
       "Setelah form dipecah per bagian, menyimpan satu bagian menimpa tautan tambahan dengan array kosong dan nomor WA dengan null.",
       "Username juga jadi wajib di semua bagian.",
       "Perbaikan: tiap bagian punya method simpan sendiri dan ada test isolasi yang memastikan menyimpan satu bagian tidak mengubah bagian lain."
-    ]
+    ],
+    "done": true
   },
   {
     "slug": "klik-baris-tabel-dropdown-tertimpa",
     "title": "Baris tabel bisa diklik, tapi menu di dalamnya tertimpa",
     "description": "Stretched-link bikin dropdown dan badge di dalam baris tabel tertimpa. Ini yang akhirnya berhasil.",
-    "tags": ["css", "ui", "debugging"],
+    "tags": [
+      "css",
+      "ui",
+      "debugging"
+    ],
     "angle": "jebakan stacking context dan solusi paling sederhana",
     "facts": [
       "Baris tabel dibuat bisa diklik dengan stretched-link.",
@@ -29,7 +38,11 @@
     "slug": "status-enum-baru-unhandled-match",
     "title": "Nambah satu status baru, dashboard Admin langsung error",
     "description": "Kenapa match tanpa default berbahaya saat enum status bertambah, dan daftar yang gua cek tiap nambah status.",
-    "tags": ["php", "laravel", "enum"],
+    "tags": [
+      "php",
+      "laravel",
+      "enum"
+    ],
     "angle": "checklist saat menambah nilai status baru",
     "facts": [
       "Method yang pakai match tanpa default melempar UnhandledMatchError saat ada nilai status baru.",
